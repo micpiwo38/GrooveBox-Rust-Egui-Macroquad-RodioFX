@@ -1,7 +1,8 @@
-use std::thread;
+use crate::app_state;
+use crate::app_state::AppState;
 use egui_macroquad::egui::{Align, Button, Color32, Frame, Layout, Response, RichText, Slider, Stroke, Ui, Vec2};
-use crate::app_state::{AppState, INSTRUMENTS};
-
+use std::thread;
+use egui_macroquad::egui;
 
 pub fn draw(ui: &mut Ui, state: &mut AppState){
     ui.heading("MAIN");
@@ -201,7 +202,7 @@ pub fn draw(ui: &mut Ui, state: &mut AppState){
 
         ui.separator();
 
-
+        //Panel de droite = FX
         Frame::new()
             .fill(Color32::from_rgba_unmultiplied(240, 195, 110, 60))
             .inner_margin(8.0)
@@ -212,6 +213,29 @@ pub fn draw(ui: &mut Ui, state: &mut AppState){
                     ui.label("EFFECTS");
                     ui.separator();
                     ui.add_space(10.0);
+
+                    //+----------------------SECTION REVERB GLOBALE--------------------+//
+                    ui.group(|ui|{
+                        ui.vertical(|ui|{
+                            ui.heading("Master Reverb");
+                            ui.add_space(5.0);
+                            //1. Activer - Desactiver la Reverb
+                            if ui.checkbox(&mut state.reverb_enabled, "Enable Reverb").changed() {
+                                //Envoyer un evenement ou MAJ du processus Audio
+                            }
+                            ui.add_space(10.0);
+                            //Desactiver le slider si la reverb est eteinte
+                            ui.add_enabled_ui(state.reverb_enabled, |ui|{
+                                //Slider pour le mix
+                                ui.label("Mix (Wet/Dry)");
+                                ui.add(egui::Slider::new(&mut state.reverb_mix, 0.0..=1.0).text("%"));
+                                ui.add_space(5.0);
+                                //3. Slider pour la taille de la piece / temps
+                                ui.label("Room Size");
+                                ui.add(egui::Slider::new(&mut state.reverb_room_size, 0.0..=1.0));
+                            });
+                        });
+                    });
                 });
             });
     });

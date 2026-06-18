@@ -32,6 +32,10 @@ pub struct AppState {
     //Mute et Solo
     pub instrument_mute: HashMap<String, bool>,
     pub instrument_solo: HashMap<String, bool>,
+    //La reverb
+    pub reverb_enabled: bool,
+    pub reverb_mix: f32, //entre 0.0 et 1.0
+    pub reverb_room_size: f32, //entre 0.0 et 1.0
 
 }
 
@@ -69,6 +73,11 @@ impl AppState {
             instrument_volumes: HashMap::default(),
             instrument_mute: HashMap::default(),
             instrument_solo: HashMap::default(),
+            //La reverb
+            reverb_enabled: false,
+            reverb_mix: 0.0,
+            reverb_room_size: 0.0,
+
         }
     }
 
